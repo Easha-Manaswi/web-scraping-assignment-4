@@ -1,0 +1,4251 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 114,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 115,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 116,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://en.wikipedia.org/wiki/List_of_most-viewed_YouTube_videos/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 117,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_List_of_most_viewed_YouTube_videos=driver.find_element_by_xpath(\"/html/body/div[5]/div[1]/div[2]/div/form/div/input[1]\")\n",
+    "search_List_of_most_viewed_YouTube_videos.send_keys(\"List_of_most_viewed_YouTube_videos\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 118,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[5]/div[1]/div[2]/div/form/div/input[3]\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 119,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Rank=[]\n",
+    "Name=[]\n",
+    "Artist=[]\n",
+    "Upload_date=[]\n",
+    "Views=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 120,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['1.', '2.', '3.', '4.', '5.']"
+      ]
+     },
+     "execution_count": 120,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div[3]/div[5]/div[1]/table[3]/tbody/tr/td[1]\")\n",
+    "for i in Title_tag:\n",
+    "    Rank.append(i.text)\n",
+    "Rank[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 128,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Baby Shark Dance',\n",
+       " 'Despacito',\n",
+       " 'Shape of You',\n",
+       " 'See You Again',\n",
+       " 'Johny Johny Yes Papa']"
+      ]
+     },
+     "execution_count": 128,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div[3]/div[5]/div[1]/table[3]/tbody/tr/td[2]/a\")\n",
+    "for i in Title_tag:\n",
+    "    Name.append(i.text)\n",
+    "Name[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 122,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Pinkfong', 'Luis Fonsi', 'Wiz Khalifa', 'Psy', 'Justin Bieber']"
+      ]
+     },
+     "execution_count": 122,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div[3]/div[5]/div[1]/table[6]/tbody/tr/td[2]/a\")\n",
+    "for i in Title_tag:\n",
+    "    Artist.append(i.text)\n",
+    "Artist[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 123,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['June 17, 2016',\n",
+       " 'January 12, 2017',\n",
+       " 'April 6, 2015',\n",
+       " 'July 15, 2012',\n",
+       " 'February 19, 2010']"
+      ]
+     },
+     "execution_count": 123,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div[3]/div[5]/div[1]/table[6]/tbody/tr/td[4]\")\n",
+    "for i in Title_tag:\n",
+    "    Upload_date.append(i.text)\n",
+    "Upload_date[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 124,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['7,037,500,000',\n",
+       " '2,993,700,000',\n",
+       " '2,894,000,000',\n",
+       " '803,700,000',\n",
+       " '245,400,000']"
+      ]
+     },
+     "execution_count": 124,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div[3]/div[5]/div[1]/table[6]/tbody/tr/td[3]\")\n",
+    "for i in Title_tag:\n",
+    "    Views.append(i.text)\n",
+    "Views[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 131,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "videos=pd.DataFrame()\n",
+    "videos['Rank']=Rank[0:5]\n",
+    "videos['Name']=Name[0:5]\n",
+    "videos['Artist']=Artist[0:5]\n",
+    "videos['Upload_date']=Upload_date[0:5]\n",
+    "videos['Views']=Views[0:5]\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 132,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Rank</th>\n",
+       "      <th>Name</th>\n",
+       "      <th>Artist</th>\n",
+       "      <th>Upload_date</th>\n",
+       "      <th>Views</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1.</td>\n",
+       "      <td>Baby Shark Dance</td>\n",
+       "      <td>Pinkfong</td>\n",
+       "      <td>June 17, 2016</td>\n",
+       "      <td>7,037,500,000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2.</td>\n",
+       "      <td>Despacito</td>\n",
+       "      <td>Luis Fonsi</td>\n",
+       "      <td>January 12, 2017</td>\n",
+       "      <td>2,993,700,000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3.</td>\n",
+       "      <td>Shape of You</td>\n",
+       "      <td>Wiz Khalifa</td>\n",
+       "      <td>April 6, 2015</td>\n",
+       "      <td>2,894,000,000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>4.</td>\n",
+       "      <td>See You Again</td>\n",
+       "      <td>Psy</td>\n",
+       "      <td>July 15, 2012</td>\n",
+       "      <td>803,700,000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5.</td>\n",
+       "      <td>Johny Johny Yes Papa</td>\n",
+       "      <td>Justin Bieber</td>\n",
+       "      <td>February 19, 2010</td>\n",
+       "      <td>245,400,000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  Rank                  Name         Artist        Upload_date          Views\n",
+       "0   1.      Baby Shark Dance       Pinkfong      June 17, 2016  7,037,500,000\n",
+       "1   2.             Despacito     Luis Fonsi   January 12, 2017  2,993,700,000\n",
+       "2   3.          Shape of You    Wiz Khalifa      April 6, 2015  2,894,000,000\n",
+       "3   4.         See You Again            Psy      July 15, 2012    803,700,000\n",
+       "4   5.  Johny Johny Yes Papa  Justin Bieber  February 19, 2010    245,400,000"
+      ]
+     },
+     "execution_count": 132,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "videos"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://www.bcci.tv/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[3]/div/div[2]/div[2]/nav/ul/li[1]/div[2]\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn3=driver.find_element_by_xpath(\"/html/body/div[3]/div/div[2]/div[2]/nav/ul/li[1]/div[2]/div/ul/li[1]/a\")\n",
+    "search_btn3.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Match_title=[]\n",
+    "Series=[]\n",
+    "Place=[]\n",
+    "Date=[]\n",
+    "Month=[]\n",
+    "Time=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['TEST', 'T20I', 'T20I', 'T20I', 'T20I']"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/div/div/div[2]/section/div/div/a/div[2]/div[1]/span[1]\")\n",
+    "for i in Title_tag:\n",
+    "    Match_title.append(i.text)\n",
+    "Match_title[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['4th Test', '1st T20I', '2nd T20I', '3rd T20I', '4th T20I']"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/div/div/div[2]/section/div/div/a/div[2]/div[2]/p/strong\")\n",
+    "for i in Title_tag:\n",
+    "    Series.append(i.text)\n",
+    "Series[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Narendra Modi Stadium, Ahmedabad',\n",
+       " 'Narendra Modi Stadium, Ahmedabad',\n",
+       " 'Narendra Modi Stadium, Ahmedabad',\n",
+       " 'Narendra Modi Stadium, Ahmedabad',\n",
+       " 'Narendra Modi Stadium, Ahmedabad']"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/div/div/div[2]/section/div/div/a/div[2]/div[2]/p/span\")\n",
+    "for i in Title_tag:\n",
+    "    Place.append(i.text)\n",
+    "Place[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['04', '12', '14', '16', '18']"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/div/div/div[2]/section/div/div/a/div[1]/div/span\")\n",
+    "for i in Title_tag:\n",
+    "    Date.append(i.text)\n",
+    "Date[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['MARCH', 'MARCH', 'MARCH', 'MARCH', 'MARCH']"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/div/div/div[2]/section/div/div/a/div[1]/div/div/span[1]\")\n",
+    "for i in Title_tag:\n",
+    "    Month.append(i.text)\n",
+    "Month[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['09:30 IST', '19:00 IST', '19:00 IST', '19:00 IST', '19:00 IST']"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/div/div/div[2]/section/div/div/a/div[1]/div/div/span[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Time.append(i.text)\n",
+    "Time[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "Match=pd.DataFrame()\n",
+    "Match['Match_title']=Match_title[0:5]\n",
+    "Match['Series']=Series[0:5]\n",
+    "Match['Place']=Place[0:5]\n",
+    "Match['Date']=Date[0:5]\n",
+    "Match['Month']=Month[0:5]\n",
+    "Match['Time']=Time[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Match_title</th>\n",
+       "      <th>Series</th>\n",
+       "      <th>Place</th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Month</th>\n",
+       "      <th>Time</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>TEST</td>\n",
+       "      <td>4th Test</td>\n",
+       "      <td>Narendra Modi Stadium, Ahmedabad</td>\n",
+       "      <td>04</td>\n",
+       "      <td>MARCH</td>\n",
+       "      <td>09:30 IST</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>T20I</td>\n",
+       "      <td>1st T20I</td>\n",
+       "      <td>Narendra Modi Stadium, Ahmedabad</td>\n",
+       "      <td>12</td>\n",
+       "      <td>MARCH</td>\n",
+       "      <td>19:00 IST</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>T20I</td>\n",
+       "      <td>2nd T20I</td>\n",
+       "      <td>Narendra Modi Stadium, Ahmedabad</td>\n",
+       "      <td>14</td>\n",
+       "      <td>MARCH</td>\n",
+       "      <td>19:00 IST</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>T20I</td>\n",
+       "      <td>3rd T20I</td>\n",
+       "      <td>Narendra Modi Stadium, Ahmedabad</td>\n",
+       "      <td>16</td>\n",
+       "      <td>MARCH</td>\n",
+       "      <td>19:00 IST</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>T20I</td>\n",
+       "      <td>4th T20I</td>\n",
+       "      <td>Narendra Modi Stadium, Ahmedabad</td>\n",
+       "      <td>18</td>\n",
+       "      <td>MARCH</td>\n",
+       "      <td>19:00 IST</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  Match_title    Series                             Place Date  Month  \\\n",
+       "0        TEST  4th Test  Narendra Modi Stadium, Ahmedabad   04  MARCH   \n",
+       "1        T20I  1st T20I  Narendra Modi Stadium, Ahmedabad   12  MARCH   \n",
+       "2        T20I  2nd T20I  Narendra Modi Stadium, Ahmedabad   14  MARCH   \n",
+       "3        T20I  3rd T20I  Narendra Modi Stadium, Ahmedabad   16  MARCH   \n",
+       "4        T20I  4th T20I  Narendra Modi Stadium, Ahmedabad   18  MARCH   \n",
+       "\n",
+       "        Time  \n",
+       "0  09:30 IST  \n",
+       "1  19:00 IST  \n",
+       "2  19:00 IST  \n",
+       "3  19:00 IST  \n",
+       "4  19:00 IST  "
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Match"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://www.guru99.com/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_selenium_exception=driver.find_element_by_xpath(\"//*[@id='gsc-i-id2']\")\n",
+    "search_selenium_exception.send_keys(\"selenium exception handling\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"//*[@id='___gcse_1']/div/div/form/table/tbody/tr/td[2]/button\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"//*[@id='___gcse_1']/div/div/div[1]/div[6]/div[2]/div/div/div[1]/div[1]/div[1]/div[1]/div/a/b\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "url=\"https://www.guru99.com/exception-handling-selenium.html\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(url)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Name=[]\n",
+    "Description=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['ElementNotVisibleException',\n",
+       " 'Exception name',\n",
+       " 'ElementNotVisibleException',\n",
+       " 'ElementNotSelectableException',\n",
+       " 'NoSuchElementException']"
+      ]
+     },
+     "execution_count": 55,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"//*[@id='g-mainbar']/div[1]/div/div/div/div/div/div[2]/table/tbody/tr/td[1]\")\n",
+    "for i in Title_tag:\n",
+    "    Name.append(i.text)\n",
+    "Name[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Description',\n",
+       " 'This type of Selenium exception occurs when an existing element in DOM has a feature set as hidden.',\n",
+       " 'This Selenium exception occurs when an element is presented in the DOM, but you can be able to select. Therefore, it is not possible to interact.',\n",
+       " 'This Exception occurs if an element could not be found.',\n",
+       " 'This Exception occurs if the frame target to be switched to does not exist.']"
+      ]
+     },
+     "execution_count": 56,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"//*[@id='g-mainbar']/div[1]/div/div/div/div/div/div[2]/table/tbody/tr/td[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Description.append(i.text)\n",
+    "Description[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 57,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "selenium=pd.DataFrame()\n",
+    "selenium['Name']=Name[0:40]\n",
+    "selenium['Description']=Description[0:40]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Name</th>\n",
+       "      <th>Description</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>ElementNotVisibleException</td>\n",
+       "      <td>Description</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Exception name</td>\n",
+       "      <td>This type of Selenium exception occurs when an...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>ElementNotVisibleException</td>\n",
+       "      <td>This Selenium exception occurs when an element...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>ElementNotSelectableException</td>\n",
+       "      <td>This Exception occurs if an element could not ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>NoSuchElementException</td>\n",
+       "      <td>This Exception occurs if the frame target to b...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>NoSuchFrameException</td>\n",
+       "      <td>This Exception occurs when you switch to no pr...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>NoAlertPresentException</td>\n",
+       "      <td>This Exception occurs if the window target to ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>NoSuchWindowException</td>\n",
+       "      <td>This Selenium exception occurs happens when th...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>StaleElementReferenceException</td>\n",
+       "      <td>The WebDriver is acting after you quit the bro...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>SessionNotFoundException</td>\n",
+       "      <td>Thrown when there is not enough time for a com...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>TimeoutException</td>\n",
+       "      <td>This Exception takes place when the WebDriver ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>11</th>\n",
+       "      <td>WebDriverException</td>\n",
+       "      <td>This type of Exception takes place when there ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>12</th>\n",
+       "      <td>ConnectionClosedException</td>\n",
+       "      <td>The command may not be completed as the elemen...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>13</th>\n",
+       "      <td>ElementClickInterceptedException</td>\n",
+       "      <td>This Selenium exception is thrown when any ele...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>14</th>\n",
+       "      <td>ElementNotInteractableException</td>\n",
+       "      <td>This happens while interacting with the Firefo...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>15</th>\n",
+       "      <td>ErrorInResponseException</td>\n",
+       "      <td>Exception is used as a placeholder in case if ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>16</th>\n",
+       "      <td>ErrorHandler.UnknownServerException</td>\n",
+       "      <td>This expectation will occur when IME engine ac...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>17</th>\n",
+       "      <td>ImeActivationFailedException</td>\n",
+       "      <td>It takes place when IME support is unavailable.</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>18</th>\n",
+       "      <td>ImeNotAvailableException</td>\n",
+       "      <td>Navigation made the user agent to hit a certif...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>19</th>\n",
+       "      <td>InsecureCertificateException</td>\n",
+       "      <td>It occurs when an argument does not belong to ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20</th>\n",
+       "      <td>InvalidArgumentException</td>\n",
+       "      <td>This happens when you try to add a cookie unde...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>21</th>\n",
+       "      <td>InvalidCookieDomainException</td>\n",
+       "      <td>This type of Exception matches an interacting ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>22</th>\n",
+       "      <td>InvalidCoordinatesException</td>\n",
+       "      <td>It occurs when command can't be finished when ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>23</th>\n",
+       "      <td>InvalidElementStateExceptio</td>\n",
+       "      <td>This Exception took place when the given sessi...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>24</th>\n",
+       "      <td>InvalidSessionIdException</td>\n",
+       "      <td>This occurs when the frame or window target to...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25</th>\n",
+       "      <td>InvalidSwitchToTargetException</td>\n",
+       "      <td>This issue occurs while executing JavaScript g...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>26</th>\n",
+       "      <td>JavascriptException</td>\n",
+       "      <td>It occurs when you afford to get the session w...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>27</th>\n",
+       "      <td>JsonException</td>\n",
+       "      <td>This kind of Exception occurs when the attribu...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>28</th>\n",
+       "      <td>NoSuchAttributeException</td>\n",
+       "      <td>It takes place if the target provided to the A...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>29</th>\n",
+       "      <td>MoveTargetOutOfBoundsException</td>\n",
+       "      <td>ContextAware does mobile device testing.</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>30</th>\n",
+       "      <td>NoSuchContextException</td>\n",
+       "      <td>This Exception occurs when no cookie matching ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>31</th>\n",
+       "      <td>NoSuchCookieException</td>\n",
+       "      <td>This Exception is a subclass of WebDriverExcep...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>32</th>\n",
+       "      <td>NotFoundException</td>\n",
+       "      <td>This Selenium exception is thrown when the ser...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>33</th>\n",
+       "      <td>RemoteDriverServerException</td>\n",
+       "      <td>It is not possible to capture a screen.</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>34</th>\n",
+       "      <td>ScreenshotException</td>\n",
+       "      <td>It happens when a new session could not be suc...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>35</th>\n",
+       "      <td>SessionNotCreatedException</td>\n",
+       "      <td>This occurs if a driver is unable to set a coo...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>36</th>\n",
+       "      <td>UnableToSetCookieException</td>\n",
+       "      <td>Happens if a support class did not get a web e...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>37</th>\n",
+       "      <td>UnexpectedTagNameException</td>\n",
+       "      <td>This expectation occurs when there is an alert...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>38</th>\n",
+       "      <td>UnhandledAlertException</td>\n",
+       "      <td>It occurs when there is the appearance of an u...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>39</th>\n",
+       "      <td>UnexpectedAlertPresentException</td>\n",
+       "      <td>This Exception happens when the requested comm...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                   Name  \\\n",
+       "0            ElementNotVisibleException   \n",
+       "1                        Exception name   \n",
+       "2            ElementNotVisibleException   \n",
+       "3         ElementNotSelectableException   \n",
+       "4                NoSuchElementException   \n",
+       "5                  NoSuchFrameException   \n",
+       "6               NoAlertPresentException   \n",
+       "7                 NoSuchWindowException   \n",
+       "8        StaleElementReferenceException   \n",
+       "9              SessionNotFoundException   \n",
+       "10                     TimeoutException   \n",
+       "11                   WebDriverException   \n",
+       "12            ConnectionClosedException   \n",
+       "13     ElementClickInterceptedException   \n",
+       "14      ElementNotInteractableException   \n",
+       "15             ErrorInResponseException   \n",
+       "16  ErrorHandler.UnknownServerException   \n",
+       "17         ImeActivationFailedException   \n",
+       "18             ImeNotAvailableException   \n",
+       "19         InsecureCertificateException   \n",
+       "20             InvalidArgumentException   \n",
+       "21         InvalidCookieDomainException   \n",
+       "22          InvalidCoordinatesException   \n",
+       "23          InvalidElementStateExceptio   \n",
+       "24            InvalidSessionIdException   \n",
+       "25       InvalidSwitchToTargetException   \n",
+       "26                  JavascriptException   \n",
+       "27                        JsonException   \n",
+       "28             NoSuchAttributeException   \n",
+       "29       MoveTargetOutOfBoundsException   \n",
+       "30               NoSuchContextException   \n",
+       "31                NoSuchCookieException   \n",
+       "32                    NotFoundException   \n",
+       "33          RemoteDriverServerException   \n",
+       "34                  ScreenshotException   \n",
+       "35           SessionNotCreatedException   \n",
+       "36           UnableToSetCookieException   \n",
+       "37           UnexpectedTagNameException   \n",
+       "38              UnhandledAlertException   \n",
+       "39      UnexpectedAlertPresentException   \n",
+       "\n",
+       "                                          Description  \n",
+       "0                                         Description  \n",
+       "1   This type of Selenium exception occurs when an...  \n",
+       "2   This Selenium exception occurs when an element...  \n",
+       "3   This Exception occurs if an element could not ...  \n",
+       "4   This Exception occurs if the frame target to b...  \n",
+       "5   This Exception occurs when you switch to no pr...  \n",
+       "6   This Exception occurs if the window target to ...  \n",
+       "7   This Selenium exception occurs happens when th...  \n",
+       "8   The WebDriver is acting after you quit the bro...  \n",
+       "9   Thrown when there is not enough time for a com...  \n",
+       "10  This Exception takes place when the WebDriver ...  \n",
+       "11  This type of Exception takes place when there ...  \n",
+       "12  The command may not be completed as the elemen...  \n",
+       "13  This Selenium exception is thrown when any ele...  \n",
+       "14  This happens while interacting with the Firefo...  \n",
+       "15  Exception is used as a placeholder in case if ...  \n",
+       "16  This expectation will occur when IME engine ac...  \n",
+       "17    It takes place when IME support is unavailable.  \n",
+       "18  Navigation made the user agent to hit a certif...  \n",
+       "19  It occurs when an argument does not belong to ...  \n",
+       "20  This happens when you try to add a cookie unde...  \n",
+       "21  This type of Exception matches an interacting ...  \n",
+       "22  It occurs when command can't be finished when ...  \n",
+       "23  This Exception took place when the given sessi...  \n",
+       "24  This occurs when the frame or window target to...  \n",
+       "25  This issue occurs while executing JavaScript g...  \n",
+       "26  It occurs when you afford to get the session w...  \n",
+       "27  This kind of Exception occurs when the attribu...  \n",
+       "28  It takes place if the target provided to the A...  \n",
+       "29           ContextAware does mobile device testing.  \n",
+       "30  This Exception occurs when no cookie matching ...  \n",
+       "31  This Exception is a subclass of WebDriverExcep...  \n",
+       "32  This Selenium exception is thrown when the ser...  \n",
+       "33            It is not possible to capture a screen.  \n",
+       "34  It happens when a new session could not be suc...  \n",
+       "35  This occurs if a driver is unable to set a coo...  \n",
+       "36  Happens if a support class did not get a web e...  \n",
+       "37  This expectation occurs when there is an alert...  \n",
+       "38  It occurs when there is the appearance of an u...  \n",
+       "39  This Exception happens when the requested comm...  "
+      ]
+     },
+     "execution_count": 58,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "selenium"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 122,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 123,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 124,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"http://statisticstimes.com/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 125,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"//*[@id='top']/div[2]/div[2]/button\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 126,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_India=driver.find_element_by_xpath(\"/html/body/div[2]/div[1]/div[2]/div[2]/div/a[3]\")\n",
+    "search_India.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 127,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn1=driver.find_element_by_xpath(\"/html/body/div[2]/div[2]/div[2]/ul/li[1]/a\")\n",
+    "search_btn1.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 130,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Rank=[]\n",
+    "State=[]\n",
+    "GSDP_19_20=[]\n",
+    "GSDP_18_19=[]\n",
+    "Share_2019=[]\n",
+    "GDP_billion=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 131,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['1', '2', '3', '4', '5', '6', '7', '8', '9']"
+      ]
+     },
+     "execution_count": 131,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[2]/div[2]/div[5]/div[1]/div/table/tbody/tr/td[1]\")\n",
+    "for i in Title_tag:\n",
+    "    Rank.append(i.text)\n",
+    "Rank[0:9]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 132,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Maharashtra',\n",
+       " 'Tamil Nadu',\n",
+       " 'Uttar Pradesh',\n",
+       " 'Gujarat',\n",
+       " 'Karnataka',\n",
+       " 'West Bengal',\n",
+       " 'Rajasthan',\n",
+       " 'Andhra Pradesh',\n",
+       " 'Telangana']"
+      ]
+     },
+     "execution_count": 132,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[2]/div[2]/div[5]/div[1]/div/table/tbody/tr/td[2]\")\n",
+    "for i in Title_tag:\n",
+    "    State.append(i.text)\n",
+    "State[0:9]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 133,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['-',\n",
+       " '1,845,853',\n",
+       " '1,687,818',\n",
+       " '-',\n",
+       " '1,631,977',\n",
+       " '1,253,832',\n",
+       " '1,020,989',\n",
+       " '972,782',\n",
+       " '969,604']"
+      ]
+     },
+     "execution_count": 133,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[2]/div[2]/div[5]/div[1]/div/table/tbody/tr/td[3]\")\n",
+    "for i in Title_tag:\n",
+    "    GSDP_19_20.append(i.text)\n",
+    "GSDP_19_20[0:9]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 134,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['2,632,792',\n",
+       " '1,630,208',\n",
+       " '1,584,764',\n",
+       " '1,502,899',\n",
+       " '1,493,127',\n",
+       " '1,089,898',\n",
+       " '942,586',\n",
+       " '862,957',\n",
+       " '861,031']"
+      ]
+     },
+     "execution_count": 134,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[2]/div[2]/div[5]/div[1]/div/table/tbody/tr/td[4]\")\n",
+    "for i in Title_tag:\n",
+    "    GSDP_18_19.append(i.text)\n",
+    "GSDP_18_19[0:9]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 135,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['13.88%',\n",
+       " '8.59%',\n",
+       " '8.35%',\n",
+       " '7.92%',\n",
+       " '7.87%',\n",
+       " '5.75%',\n",
+       " '4.97%',\n",
+       " '4.55%',\n",
+       " '4.54%']"
+      ]
+     },
+     "execution_count": 135,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[2]/div[2]/div[5]/div[1]/div/table/tbody/tr/td[5]\")\n",
+    "for i in Title_tag:\n",
+    "    Share_2019.append(i.text)\n",
+    "Share_2019[0:9]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 136,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['398.145',\n",
+       " '246.529',\n",
+       " '239.656',\n",
+       " '227.276',\n",
+       " '225.798',\n",
+       " '164.820',\n",
+       " '142.543',\n",
+       " '130.501',\n",
+       " '130.210']"
+      ]
+     },
+     "execution_count": 136,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[2]/div[2]/div[5]/div[1]/div/table/tbody/tr/td[6]\")\n",
+    "for i in Title_tag:\n",
+    "    GDP_billion.append(i.text)\n",
+    "GDP_billion[0:9]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 137,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "statisticstime=pd.DataFrame()\n",
+    "statisticstime['Rank']=Rank[0:9]\n",
+    "statisticstime['State']=State[0:9]\n",
+    "statisticstime['GSDP_19_20']=GSDP_19_20[0:9]\n",
+    "statisticstime['GSDP_18_19']=GSDP_18_19[0:9]\n",
+    "statisticstime['Share_2019']=Share_2019[0:9]\n",
+    "statisticstime['GDP_billion']=GDP_billion[0:9]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 138,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Rank</th>\n",
+       "      <th>State</th>\n",
+       "      <th>GSDP_19_20</th>\n",
+       "      <th>GSDP_18_19</th>\n",
+       "      <th>Share_2019</th>\n",
+       "      <th>GDP_billion</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>Maharashtra</td>\n",
+       "      <td>-</td>\n",
+       "      <td>2,632,792</td>\n",
+       "      <td>13.88%</td>\n",
+       "      <td>398.145</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2</td>\n",
+       "      <td>Tamil Nadu</td>\n",
+       "      <td>1,845,853</td>\n",
+       "      <td>1,630,208</td>\n",
+       "      <td>8.59%</td>\n",
+       "      <td>246.529</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3</td>\n",
+       "      <td>Uttar Pradesh</td>\n",
+       "      <td>1,687,818</td>\n",
+       "      <td>1,584,764</td>\n",
+       "      <td>8.35%</td>\n",
+       "      <td>239.656</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>4</td>\n",
+       "      <td>Gujarat</td>\n",
+       "      <td>-</td>\n",
+       "      <td>1,502,899</td>\n",
+       "      <td>7.92%</td>\n",
+       "      <td>227.276</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5</td>\n",
+       "      <td>Karnataka</td>\n",
+       "      <td>1,631,977</td>\n",
+       "      <td>1,493,127</td>\n",
+       "      <td>7.87%</td>\n",
+       "      <td>225.798</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>6</td>\n",
+       "      <td>West Bengal</td>\n",
+       "      <td>1,253,832</td>\n",
+       "      <td>1,089,898</td>\n",
+       "      <td>5.75%</td>\n",
+       "      <td>164.820</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>7</td>\n",
+       "      <td>Rajasthan</td>\n",
+       "      <td>1,020,989</td>\n",
+       "      <td>942,586</td>\n",
+       "      <td>4.97%</td>\n",
+       "      <td>142.543</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>8</td>\n",
+       "      <td>Andhra Pradesh</td>\n",
+       "      <td>972,782</td>\n",
+       "      <td>862,957</td>\n",
+       "      <td>4.55%</td>\n",
+       "      <td>130.501</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>9</td>\n",
+       "      <td>Telangana</td>\n",
+       "      <td>969,604</td>\n",
+       "      <td>861,031</td>\n",
+       "      <td>4.54%</td>\n",
+       "      <td>130.210</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  Rank           State GSDP_19_20 GSDP_18_19 Share_2019 GDP_billion\n",
+       "0    1     Maharashtra          -  2,632,792     13.88%     398.145\n",
+       "1    2      Tamil Nadu  1,845,853  1,630,208      8.59%     246.529\n",
+       "2    3   Uttar Pradesh  1,687,818  1,584,764      8.35%     239.656\n",
+       "3    4         Gujarat          -  1,502,899      7.92%     227.276\n",
+       "4    5       Karnataka  1,631,977  1,493,127      7.87%     225.798\n",
+       "5    6     West Bengal  1,253,832  1,089,898      5.75%     164.820\n",
+       "6    7       Rajasthan  1,020,989    942,586      4.97%     142.543\n",
+       "7    8  Andhra Pradesh    972,782    862,957      4.55%     130.501\n",
+       "8    9       Telangana    969,604    861,031      4.54%     130.210"
+      ]
+     },
+     "execution_count": 138,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "statisticstime"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 5"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 105,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 106,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 107,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://github.com/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 108,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[1]/header/div/div[2]/nav/ul/li[4]/details/summary\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 109,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[1]/header/div/div[2]/nav/ul/li[4]/details/div/ul[2]/li[3]/a\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 110,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Repository_title=[]\n",
+    "Repository_description=[]\n",
+    "Contributors_count=[]\n",
+    "Language_used=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 111,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['gskinnerTeam / flutter-folio',\n",
+       " 'flutter / flutter',\n",
+       " 'google / googletest',\n",
+       " 'muguruzawang / jd_maotai_seckill',\n",
+       " 'dolthub / dolt']"
+      ]
+     },
+     "execution_count": 111,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/main/div[3]/div/div[2]/article/h1/a\")\n",
+    "for i in Title_tag:\n",
+    "        Repository_title.append(i.text)\n",
+    "Repository_title[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 112,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['A platform adaptive Flutter app for desktop, mobile and web.',\n",
+       " 'Flutter makes it easy and fast to build beautiful apps for mobile and beyond.',\n",
+       " 'Googletest - Google Testing and Mocking Framework',\n",
+       " '优化版本的京东茅台抢购神器',\n",
+       " \"Dolt – It's Git for Data\"]"
+      ]
+     },
+     "execution_count": 112,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/main/div[3]/div/div[2]/article/p\")\n",
+    "for i in Title_tag:\n",
+    "    Repository_description.append(i.text)\n",
+    "Repository_description[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 113,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['175', '16,385', '7,269', '4,286', '89']"
+      ]
+     },
+     "execution_count": 113,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/main/div[3]/div/div[2]/article/div[2]/a[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Contributors_count.append(i.text)\n",
+    "Contributors_count[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 114,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Dart', 'Dart', 'C++', 'Python', 'Go']"
+      ]
+     },
+     "execution_count": 114,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[4]/main/div[3]/div/div[2]/article/div[2]/span[1]/span[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Language_used.append(i.text)\n",
+    "Language_used[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 115,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "trending=pd.DataFrame()\n",
+    "trending['Repository_title']=Repository_title[0:5]\n",
+    "trending['Repository_description']=Repository_description[0:5]\n",
+    "trending['Contributors_count']=Contributors_count[0:5]\n",
+    "trending['Language_used']=Language_used[0:5]\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 116,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Repository_title</th>\n",
+       "      <th>Repository_description</th>\n",
+       "      <th>Contributors_count</th>\n",
+       "      <th>Language_used</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>gskinnerTeam / flutter-folio</td>\n",
+       "      <td>A platform adaptive Flutter app for desktop, m...</td>\n",
+       "      <td>175</td>\n",
+       "      <td>Dart</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>flutter / flutter</td>\n",
+       "      <td>Flutter makes it easy and fast to build beauti...</td>\n",
+       "      <td>16,385</td>\n",
+       "      <td>Dart</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>google / googletest</td>\n",
+       "      <td>Googletest - Google Testing and Mocking Framework</td>\n",
+       "      <td>7,269</td>\n",
+       "      <td>C++</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>muguruzawang / jd_maotai_seckill</td>\n",
+       "      <td>优化版本的京东茅台抢购神器</td>\n",
+       "      <td>4,286</td>\n",
+       "      <td>Python</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>dolthub / dolt</td>\n",
+       "      <td>Dolt – It's Git for Data</td>\n",
+       "      <td>89</td>\n",
+       "      <td>Go</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   Repository_title  \\\n",
+       "0      gskinnerTeam / flutter-folio   \n",
+       "1                 flutter / flutter   \n",
+       "2               google / googletest   \n",
+       "3  muguruzawang / jd_maotai_seckill   \n",
+       "4                    dolthub / dolt   \n",
+       "\n",
+       "                              Repository_description Contributors_count  \\\n",
+       "0  A platform adaptive Flutter app for desktop, m...                175   \n",
+       "1  Flutter makes it easy and fast to build beauti...             16,385   \n",
+       "2  Googletest - Google Testing and Mocking Framework              7,269   \n",
+       "3                                      优化版本的京东茅台抢购神器              4,286   \n",
+       "4                           Dolt – It's Git for Data                 89   \n",
+       "\n",
+       "  Language_used  \n",
+       "0          Dart  \n",
+       "1          Dart  \n",
+       "2           C++  \n",
+       "3        Python  \n",
+       "4            Go  "
+      ]
+     },
+     "execution_count": 116,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "trending"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 148,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 6"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 62,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://www.billboard.com/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 65,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[2]/div[2]/div[1]/div[1]/ul/li[1]/a\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[2]/div[2]/div[1]/div[1]/ul/li[1]/span/span/span/span[1]/ul/li[1]/a\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Song_name=[]\n",
+    "Artist_name=[]\n",
+    "Last_wee_rank=[]\n",
+    "Peak_rank=[]\n",
+    "Weeks_on_board=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 74,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Drivers License',\n",
+       " 'Up',\n",
+       " 'Go Crazy',\n",
+       " '34+35',\n",
+       " 'Blinding Lights',\n",
+       " 'Save Your Tears',\n",
+       " 'Mood',\n",
+       " 'Calling My Phone',\n",
+       " 'Positions',\n",
+       " 'Levitating',\n",
+       " 'What You Know Bout Love',\n",
+       " 'Therefore I Am',\n",
+       " 'Back In Blood',\n",
+       " 'Whoopty',\n",
+       " 'For The Night',\n",
+       " 'Dakiti',\n",
+       " 'Good Days',\n",
+       " 'I Hope',\n",
+       " \"You're Mines Still\",\n",
+       " 'Better Together',\n",
+       " 'You Broke Me First.',\n",
+       " 'Streets',\n",
+       " 'On Me',\n",
+       " \"My Ex's Best Friend\",\n",
+       " 'Good Time',\n",
+       " 'Throat Baby (Go Baby)',\n",
+       " 'Holy',\n",
+       " 'Best Friend',\n",
+       " 'Willow',\n",
+       " 'Lonely',\n",
+       " 'Bang!',\n",
+       " 'No More Parties',\n",
+       " 'Anyone',\n",
+       " 'Lemonade',\n",
+       " 'Just The Way',\n",
+       " 'Put Your Records On',\n",
+       " 'Down To One',\n",
+       " 'Without You',\n",
+       " 'Laugh Now Cry Later',\n",
+       " 'Starting Over',\n",
+       " 'Body',\n",
+       " 'Cry Baby',\n",
+       " 'Time Today',\n",
+       " \"What's Your Country Song\",\n",
+       " 'Damage',\n",
+       " 'Beers And Sunshine',\n",
+       " 'Beat Box',\n",
+       " 'The Good Ones',\n",
+       " \"We're Good\",\n",
+       " 'Dynamite',\n",
+       " 'Buss It',\n",
+       " 'Wasted On You',\n",
+       " 'Clouds',\n",
+       " 'Telepatia',\n",
+       " 'Monsters',\n",
+       " 'Goosebumps',\n",
+       " 'Golden',\n",
+       " 'La Noche de Anoche',\n",
+       " 'My Head And My Heart',\n",
+       " 'Long Live',\n",
+       " 'Test Drive',\n",
+       " 'Astronaut In The Ocean',\n",
+       " 'Heartbreak Anniversary',\n",
+       " 'Sand In My Boots',\n",
+       " 'Heat Waves',\n",
+       " 'Lady',\n",
+       " 'Hit Bout It',\n",
+       " 'Forever After All',\n",
+       " 'Hole In The Bottle',\n",
+       " 'Tyler Herro',\n",
+       " 'Girl Like Me',\n",
+       " 'Finesse Out The Gang Way',\n",
+       " 'Hell Of A View',\n",
+       " 'Lifestyle',\n",
+       " \"Momma's House\",\n",
+       " 'Masterpiece',\n",
+       " 'Somebody Like That',\n",
+       " 'Opp Stoppa',\n",
+       " 'Neighbors',\n",
+       " \"Somebody's Problem\",\n",
+       " 'You Got It',\n",
+       " 'Bandido',\n",
+       " 'Moonwalking In Calabasas',\n",
+       " 'Drankin N Smokin',\n",
+       " 'One Too Many',\n",
+       " \"Still Trappin'\",\n",
+       " 'Quicksand',\n",
+       " 'Chicken Tendies',\n",
+       " 'Pick Up Your Feelings',\n",
+       " 'ZaZa',\n",
+       " 'Almost Maybes',\n",
+       " 'Made For You',\n",
+       " 'Glad You Exist',\n",
+       " 'Afterglow',\n",
+       " 'Cover Me Up',\n",
+       " 'The Business',\n",
+       " 'Hello',\n",
+       " 'Monster',\n",
+       " 'Track Star']"
+      ]
+     },
+     "execution_count": 74,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/main/div/div/div[7]/div/ol/li/button/span[2]/span[1]\")\n",
+    "for i in Title_tag:\n",
+    "    Song_name.append(i.text)\n",
+    "Song_name[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 75,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Olivia Rodrigo',\n",
+       " 'Cardi B',\n",
+       " 'Chris Brown & Young Thug',\n",
+       " 'Ariana Grande',\n",
+       " 'The Weeknd',\n",
+       " 'The Weeknd',\n",
+       " '24kGoldn Featuring iann dior',\n",
+       " 'Lil Tjay Featuring 6LACK',\n",
+       " 'Ariana Grande',\n",
+       " 'Dua Lipa Featuring DaBaby',\n",
+       " 'Pop Smoke',\n",
+       " 'Billie Eilish',\n",
+       " 'Pooh Shiesty Featuring Lil Durk',\n",
+       " 'CJ',\n",
+       " 'Pop Smoke Featuring Lil Baby & DaBaby',\n",
+       " 'Bad Bunny & Jhay Cortez',\n",
+       " 'SZA',\n",
+       " 'Gabby Barrett Featuring Charlie Puth',\n",
+       " 'Yung Bleu Featuring Drake',\n",
+       " 'Luke Combs',\n",
+       " 'Tate McRae',\n",
+       " 'Doja Cat',\n",
+       " 'Lil Baby',\n",
+       " 'Machine Gun Kelly X blackbear',\n",
+       " 'Niko Moon',\n",
+       " 'BRS Kash',\n",
+       " 'Justin Bieber Featuring Chance The Rapper',\n",
+       " 'Saweetie Featuring Doja Cat',\n",
+       " 'Taylor Swift',\n",
+       " 'Justin Bieber & benny blanco',\n",
+       " 'AJR',\n",
+       " 'Coi Leray Featuring Lil Durk',\n",
+       " 'Justin Bieber',\n",
+       " 'Internet Money & Gunna Featuring Don Toliver & NAV',\n",
+       " 'Parmalee x Blanco Brown',\n",
+       " 'Ritt Momney',\n",
+       " 'Luke Bryan',\n",
+       " 'The Kid LAROI',\n",
+       " 'Drake Featuring Lil Durk',\n",
+       " 'Chris Stapleton',\n",
+       " 'Megan Thee Stallion',\n",
+       " 'Megan Thee Stallion Featuring DaBaby',\n",
+       " 'Moneybagg Yo',\n",
+       " 'Thomas Rhett',\n",
+       " 'H.E.R.',\n",
+       " 'Darius Rucker',\n",
+       " 'SpotemGottem',\n",
+       " 'Gabby Barrett',\n",
+       " 'Dua Lipa',\n",
+       " 'BTS',\n",
+       " 'Erica Banks',\n",
+       " 'Morgan Wallen',\n",
+       " 'NF',\n",
+       " 'Kali Uchis',\n",
+       " 'All Time Low Featuring Demi Lovato & blackbear',\n",
+       " 'Travis Scott & HVME',\n",
+       " 'Harry Styles',\n",
+       " 'Bad Bunny & ROSALIA',\n",
+       " 'Ava Max',\n",
+       " 'Florida Georgia Line',\n",
+       " 'Ariana Grande',\n",
+       " 'Masked Wolf',\n",
+       " 'Giveon',\n",
+       " 'Morgan Wallen',\n",
+       " 'Glass Animals',\n",
+       " 'Brett Young',\n",
+       " 'Lil Yachty Featuring Kodak Black',\n",
+       " 'Luke Combs',\n",
+       " 'Kelsea Ballerini',\n",
+       " 'Jack Harlow',\n",
+       " 'Black Eyed Peas X Shakira',\n",
+       " 'Lil Durk Featuring Lil Baby',\n",
+       " 'Eric Church',\n",
+       " 'Jason Derulo Featuring Adam Levine',\n",
+       " 'Dustin Lynch',\n",
+       " 'DaBaby',\n",
+       " 'Tenille Arts',\n",
+       " 'YBN Nahmir Featuring 21 Savage',\n",
+       " 'Pooh Shiesty Featuring BIG30',\n",
+       " 'Morgan Wallen',\n",
+       " 'VEDO',\n",
+       " 'Myke Towers & Juhn',\n",
+       " 'DDG',\n",
+       " 'Future & Lil Uzi Vert',\n",
+       " 'Keith Urban Duet With P!nk',\n",
+       " 'Lil Durk & King Von',\n",
+       " 'Morray',\n",
+       " 'Clinton Kane',\n",
+       " 'Jazmine Sullivan',\n",
+       " '6ix9ine',\n",
+       " 'Jordan Davis',\n",
+       " 'Jake Owen',\n",
+       " 'Dan + Shay',\n",
+       " 'Ed Sheeran',\n",
+       " 'Morgan Wallen',\n",
+       " 'Tiesto',\n",
+       " 'Pop Smoke Featuring A Boogie Wit da Hoodie',\n",
+       " 'Shawn Mendes & Justin Bieber',\n",
+       " 'Mooski']"
+      ]
+     },
+     "execution_count": 75,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/main/div/div/div[7]/div/ol/li/button/span[2]/span[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Artist_name.append(i.text)\n",
+    "Artist_name[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['1',\n",
+       " '5',\n",
+       " '8',\n",
+       " '2',\n",
+       " '1',\n",
+       " '6',\n",
+       " '1',\n",
+       " '3',\n",
+       " '1',\n",
+       " '5',\n",
+       " '12',\n",
+       " '13',\n",
+       " '16',\n",
+       " '15',\n",
+       " '6',\n",
+       " '21',\n",
+       " '9',\n",
+       " '3',\n",
+       " '24',\n",
+       " '15',\n",
+       " '23',\n",
+       " '27',\n",
+       " '32',\n",
+       " '29',\n",
+       " '35',\n",
+       " '30',\n",
+       " '3',\n",
+       " '38',\n",
+       " '1',\n",
+       " '12',\n",
+       " '8',\n",
+       " '70',\n",
+       " '6',\n",
+       " '6',\n",
+       " '40',\n",
+       " '39',\n",
+       " '46',\n",
+       " '43',\n",
+       " '2',\n",
+       " '25',\n",
+       " '12',\n",
+       " '28',\n",
+       " '50',\n",
+       " '56',\n",
+       " '44',\n",
+       " '42',\n",
+       " '54',\n",
+       " '55',\n",
+       " '49',\n",
+       " '1',\n",
+       " '47',\n",
+       " '53',\n",
+       " '-',\n",
+       " '-',\n",
+       " '59',\n",
+       " '60',\n",
+       " '58',\n",
+       " '69',\n",
+       " '61',\n",
+       " '48',\n",
+       " '-',\n",
+       " '68',\n",
+       " '74',\n",
+       " '32',\n",
+       " '64',\n",
+       " '63',\n",
+       " '-',\n",
+       " '66',\n",
+       " '39',\n",
+       " '34',\n",
+       " '67',\n",
+       " '79',\n",
+       " '73',\n",
+       " '76',\n",
+       " '72',\n",
+       " '80',\n",
+       " '78',\n",
+       " '99',\n",
+       " '51',\n",
+       " '25',\n",
+       " '85',\n",
+       " '82',\n",
+       " '81',\n",
+       " '90',\n",
+       " '86',\n",
+       " '87',\n",
+       " '94',\n",
+       " '-',\n",
+       " '88',\n",
+       " '-',\n",
+       " '96',\n",
+       " '-',\n",
+       " '93',\n",
+       " '29',\n",
+       " '52',\n",
+       " '-',\n",
+       " '-',\n",
+       " '8',\n",
+       " '-']"
+      ]
+     },
+     "execution_count": 76,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/main/div/div/div[7]/div/ol/li/button/div/div[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Last_wee_rank.append(i.text)\n",
+    "Last_wee_rank[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 77,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['1',\n",
+       " '2',\n",
+       " '3',\n",
+       " '17',\n",
+       " '64',\n",
+       " '4',\n",
+       " '29',\n",
+       " '2',\n",
+       " '18',\n",
+       " '21',\n",
+       " '10',\n",
+       " '2',\n",
+       " '13',\n",
+       " '10',\n",
+       " '34',\n",
+       " '5',\n",
+       " '9',\n",
+       " '61',\n",
+       " '19',\n",
+       " '21',\n",
+       " '21',\n",
+       " '18',\n",
+       " '23',\n",
+       " '24',\n",
+       " '25',\n",
+       " '24',\n",
+       " '23',\n",
+       " '28',\n",
+       " '11',\n",
+       " '19',\n",
+       " '34',\n",
+       " '32',\n",
+       " '8',\n",
+       " '28',\n",
+       " '35',\n",
+       " '36',\n",
+       " '37',\n",
+       " '38',\n",
+       " '28',\n",
+       " '26',\n",
+       " '14',\n",
+       " '12',\n",
+       " '37',\n",
+       " '44',\n",
+       " '44',\n",
+       " '11',\n",
+       " '47',\n",
+       " '48',\n",
+       " '49',\n",
+       " '27',\n",
+       " '7',\n",
+       " '9',\n",
+       " '53',\n",
+       " '54',\n",
+       " '55',\n",
+       " '56',\n",
+       " '57',\n",
+       " '53',\n",
+       " '59',\n",
+       " '8',\n",
+       " '61',\n",
+       " '62',\n",
+       " '63',\n",
+       " '7',\n",
+       " '64',\n",
+       " '63',\n",
+       " '67',\n",
+       " '2',\n",
+       " '19',\n",
+       " '18',\n",
+       " '67',\n",
+       " '39',\n",
+       " '73',\n",
+       " '74',\n",
+       " '72',\n",
+       " '55',\n",
+       " '77',\n",
+       " '78',\n",
+       " '3',\n",
+       " '11',\n",
+       " '81',\n",
+       " '82',\n",
+       " '9',\n",
+       " '31',\n",
+       " '62',\n",
+       " '53',\n",
+       " '87',\n",
+       " '88',\n",
+       " '88',\n",
+       " '90',\n",
+       " '91',\n",
+       " '92',\n",
+       " '63',\n",
+       " '10',\n",
+       " '8',\n",
+       " '96',\n",
+       " '97',\n",
+       " '14',\n",
+       " '99']"
+      ]
+     },
+     "execution_count": 77,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/main/div/div/div[7]/div/ol/li/button/div/div[3]\")\n",
+    "for i in Title_tag:\n",
+    "    Peak_rank.append(i.text)\n",
+    "Peak_rank[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['7',\n",
+       " '3',\n",
+       " '42',\n",
+       " '11',\n",
+       " '25',\n",
+       " '16',\n",
+       " '8',\n",
+       " '16',\n",
+       " '17',\n",
+       " '12',\n",
+       " '27',\n",
+       " '7',\n",
+       " '12',\n",
+       " '28',\n",
+       " '21',\n",
+       " '19',\n",
+       " '7',\n",
+       " '3',\n",
+       " '9',\n",
+       " '19',\n",
+       " '9',\n",
+       " '12',\n",
+       " '3',\n",
+       " '10',\n",
+       " '11',\n",
+       " '6',\n",
+       " '9',\n",
+       " '2',\n",
+       " '7',\n",
+       " '1',\n",
+       " '1',\n",
+       " '9',\n",
+       " '6',\n",
+       " '18',\n",
+       " '5',\n",
+       " '3',\n",
+       " '1',\n",
+       " '2',\n",
+       " '2',\n",
+       " '6',\n",
+       " '7',\n",
+       " '1',\n",
+       " '18',\n",
+       " '7',\n",
+       " '4',\n",
+       " '7',\n",
+       " '3',\n",
+       " '7',\n",
+       " '5',\n",
+       " '6',\n",
+       " '3',\n",
+       " '9',\n",
+       " '3',\n",
+       " '6',\n",
+       " '11',\n",
+       " '9',\n",
+       " '3',\n",
+       " '1',\n",
+       " '5',\n",
+       " '1',\n",
+       " '5',\n",
+       " '1',\n",
+       " '3',\n",
+       " '1',\n",
+       " '1',\n",
+       " '1',\n",
+       " '7',\n",
+       " '3',\n",
+       " '42',\n",
+       " '11',\n",
+       " '25',\n",
+       " '16',\n",
+       " '8',\n",
+       " '16',\n",
+       " '17',\n",
+       " '12',\n",
+       " '27',\n",
+       " '7',\n",
+       " '12',\n",
+       " '28',\n",
+       " '21',\n",
+       " '19',\n",
+       " '7',\n",
+       " '3',\n",
+       " '9',\n",
+       " '19',\n",
+       " '9',\n",
+       " '12',\n",
+       " '3',\n",
+       " '10',\n",
+       " '11',\n",
+       " '6',\n",
+       " '9',\n",
+       " '2',\n",
+       " '7',\n",
+       " '1',\n",
+       " '1',\n",
+       " '9',\n",
+       " '6']"
+      ]
+     },
+     "execution_count": 78,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/main/div/div/div[7]/div/ol/li/button/div/div[4]\")\n",
+    "for i in Title_tag:\n",
+    "    Weeks_on_board.append(i.text)\n",
+    "Weeks_on_board[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "songs=pd.DataFrame()\n",
+    "songs['Song_name']=Song_name[0:99]\n",
+    "songs['Artist_name']=Artist_name[0:99]\n",
+    "songs['Last_wee_rank']=Last_wee_rank[0:99]\n",
+    "songs['Peak_rank']=Peak_rank[0:99]\n",
+    "songs['Weeks_on_board']=Weeks_on_board[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Song_name</th>\n",
+       "      <th>Artist_name</th>\n",
+       "      <th>Last_wee_rank</th>\n",
+       "      <th>Peak_rank</th>\n",
+       "      <th>Weeks_on_board</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Drivers License</td>\n",
+       "      <td>Olivia Rodrigo</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>7</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Up</td>\n",
+       "      <td>Cardi B</td>\n",
+       "      <td>5</td>\n",
+       "      <td>2</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Go Crazy</td>\n",
+       "      <td>Chris Brown &amp; Young Thug</td>\n",
+       "      <td>8</td>\n",
+       "      <td>3</td>\n",
+       "      <td>42</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>34+35</td>\n",
+       "      <td>Ariana Grande</td>\n",
+       "      <td>2</td>\n",
+       "      <td>17</td>\n",
+       "      <td>11</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Blinding Lights</td>\n",
+       "      <td>The Weeknd</td>\n",
+       "      <td>1</td>\n",
+       "      <td>64</td>\n",
+       "      <td>25</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>94</th>\n",
+       "      <td>Cover Me Up</td>\n",
+       "      <td>Morgan Wallen</td>\n",
+       "      <td>52</td>\n",
+       "      <td>8</td>\n",
+       "      <td>7</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>95</th>\n",
+       "      <td>The Business</td>\n",
+       "      <td>Tiesto</td>\n",
+       "      <td>-</td>\n",
+       "      <td>96</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>96</th>\n",
+       "      <td>Hello</td>\n",
+       "      <td>Pop Smoke Featuring A Boogie Wit da Hoodie</td>\n",
+       "      <td>-</td>\n",
+       "      <td>97</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>97</th>\n",
+       "      <td>Monster</td>\n",
+       "      <td>Shawn Mendes &amp; Justin Bieber</td>\n",
+       "      <td>8</td>\n",
+       "      <td>14</td>\n",
+       "      <td>9</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>98</th>\n",
+       "      <td>Track Star</td>\n",
+       "      <td>Mooski</td>\n",
+       "      <td>-</td>\n",
+       "      <td>99</td>\n",
+       "      <td>6</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>99 rows × 5 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "          Song_name                                 Artist_name Last_wee_rank  \\\n",
+       "0   Drivers License                              Olivia Rodrigo             1   \n",
+       "1                Up                                     Cardi B             5   \n",
+       "2          Go Crazy                    Chris Brown & Young Thug             8   \n",
+       "3             34+35                               Ariana Grande             2   \n",
+       "4   Blinding Lights                                  The Weeknd             1   \n",
+       "..              ...                                         ...           ...   \n",
+       "94      Cover Me Up                               Morgan Wallen            52   \n",
+       "95     The Business                                      Tiesto             -   \n",
+       "96            Hello  Pop Smoke Featuring A Boogie Wit da Hoodie             -   \n",
+       "97          Monster                Shawn Mendes & Justin Bieber             8   \n",
+       "98       Track Star                                      Mooski             -   \n",
+       "\n",
+       "   Peak_rank Weeks_on_board  \n",
+       "0          1              7  \n",
+       "1          2              3  \n",
+       "2          3             42  \n",
+       "3         17             11  \n",
+       "4         64             25  \n",
+       "..       ...            ...  \n",
+       "94         8              7  \n",
+       "95        96              1  \n",
+       "96        97              1  \n",
+       "97        14              9  \n",
+       "98        99              6  \n",
+       "\n",
+       "[99 rows x 5 columns]"
+      ]
+     },
+     "execution_count": 80,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "songs"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 90,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 7"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://www.naukri.com/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[1]/div[1]/div/ul[1]/li[2]/a/div\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "url=\"https://www.naukri.com/hr-recruiters-consultants\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(url)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[2]/div[2]/div[1]/div[1]/form/div[1]/div/div[1]/div[1]/div[2]/input\")\n",
+    "search_btn.send_keys(\"Data science\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "search_btn=driver.find_element_by_xpath(\"/html/body/div[2]/div[2]/div[1]/div[1]/form/div[1]/button\")\n",
+    "search_btn.click()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Name=[]\n",
+    "Designation=[]\n",
+    "Company=[]\n",
+    "Skills_they_hire_for=[]\n",
+    "Location=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Aakash Harit', 'shravan Kumar Gaddam']"
+      ]
+     },
+     "execution_count": 53,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div/div[2]/div[1]/div/div[1]/div[1]/p/a[1]/span\")\n",
+    "for i in Title_tag:\n",
+    "    Name.append(i.text)\n",
+    "Name[0:2]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['HR Manager', 'Company Recruiter']"
+      ]
+     },
+     "execution_count": 54,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div/div[2]/div[1]/div/div[1]/div[1]/p/span\")\n",
+    "for i in Title_tag:\n",
+    "    Designation.append(i.text)\n",
+    "Designation[0:2]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Data Science Network', 'Shore Infotech India Pvt. Ltd']"
+      ]
+     },
+     "execution_count": 55,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div/div[2]/div[1]/div/div[1]/div[1]/p/a\")\n",
+    "for i in Title_tag:\n",
+    "    Company.append(i.text)\n",
+    "Company[0:2]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Classic ASP Developer, Internet Marketing Professional, Data Science SME, Content Writers, SEO Professional, Revenue Professional',\n",
+       " '.Net, Java, Data Science, Linux Administration, Sql Server Development, Winforms, Wcf Services, Wpf, Telecom Engineering, Technical Management, Software']"
+      ]
+     },
+     "execution_count": 56,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div/div[2]/div[1]/div/div[1]/div\")\n",
+    "for i in Title_tag:\n",
+    "    Skills_they_hire_for.append(i.text)\n",
+    "Skills_they_hire_for[0:2]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 57,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Delhi', 'Hyderabad / Secunderabad']"
+      ]
+     },
+     "execution_count": 57,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div/div[2]/div[1]/div/div[1]/div[1]/p/span/small\")\n",
+    "for i in Title_tag:\n",
+    "    Location.append(i.text)\n",
+    "Location[0:2]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "Data_science=pd.DataFrame()\n",
+    "Data_science['Name']=Name[0:2]\n",
+    "Data_science['Designation']=Designation[0:2]\n",
+    "Data_science['Company']=Company[0:2]\n",
+    "Data_science['Skills_they_hire_for']=Skills_they_hire_for[0:2]\n",
+    "Data_science['Location']=Location[0:2]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 60,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Name</th>\n",
+       "      <th>Designation</th>\n",
+       "      <th>Company</th>\n",
+       "      <th>Skills_they_hire_for</th>\n",
+       "      <th>Location</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Aakash Harit</td>\n",
+       "      <td>HR Manager</td>\n",
+       "      <td>Data Science Network</td>\n",
+       "      <td>Classic ASP Developer, Internet Marketing Prof...</td>\n",
+       "      <td>Delhi</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>shravan Kumar Gaddam</td>\n",
+       "      <td>Company Recruiter</td>\n",
+       "      <td>Shore Infotech India Pvt. Ltd</td>\n",
+       "      <td>.Net, Java, Data Science, Linux Administration...</td>\n",
+       "      <td>Hyderabad / Secunderabad</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   Name        Designation                        Company  \\\n",
+       "0          Aakash Harit         HR Manager           Data Science Network   \n",
+       "1  shravan Kumar Gaddam  Company Recruiter  Shore Infotech India Pvt. Ltd   \n",
+       "\n",
+       "                                Skills_they_hire_for                  Location  \n",
+       "0  Classic ASP Developer, Internet Marketing Prof...                     Delhi  \n",
+       "1  .Net, Java, Data Science, Linux Administration...  Hyderabad / Secunderabad  "
+      ]
+     },
+     "execution_count": 60,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Data_science"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 8"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 62,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 64,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://www.theguardian.com/news/datablog/2012/aug/09/best-selling-books-all-time-fifty-shades-grey-compare\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 65,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Book_name=[]\n",
+    "Author_name=[]\n",
+    "Volumes_sold=[]\n",
+    "Publisher=[]\n",
+    "Genre=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Da Vinci Code,The',\n",
+       " 'Harry Potter and the Deathly Hallows',\n",
+       " \"Harry Potter and the Philosopher's Stone\",\n",
+       " 'Harry Potter and the Order of the Phoenix',\n",
+       " 'Fifty Shades of Grey']"
+      ]
+     },
+     "execution_count": 66,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div/div[2]/div[2]/div/div[2]/div/table/tbody/tr/td[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Book_name.append(i.text)\n",
+    "Book_name[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Brown, Dan',\n",
+       " 'Rowling, J.K.',\n",
+       " 'Rowling, J.K.',\n",
+       " 'Rowling, J.K.',\n",
+       " 'James, E. L.']"
+      ]
+     },
+     "execution_count": 67,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div/div[2]/div[2]/div/div[2]/div/table/tbody/tr/td[3]\")\n",
+    "for i in Title_tag:\n",
+    "    Author_name.append(i.text)\n",
+    "Author_name[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['5,094,805', '4,475,152', '4,200,654', '4,179,479', '3,758,936']"
+      ]
+     },
+     "execution_count": 68,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div/div[2]/div[2]/div/div[2]/div/table/tbody/tr/td[4]\")\n",
+    "for i in Title_tag:\n",
+    "    Volumes_sold.append(i.text)\n",
+    "Volumes_sold[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Transworld', 'Bloomsbury', 'Bloomsbury', 'Bloomsbury', 'Random House']"
+      ]
+     },
+     "execution_count": 69,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div/div[2]/div[2]/div/div[2]/div/table/tbody/tr/td[5]\")\n",
+    "for i in Title_tag:\n",
+    "    Publisher.append(i.text)\n",
+    "Publisher[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Crime, Thriller & Adventure',\n",
+       " \"Children's Fiction\",\n",
+       " \"Children's Fiction\",\n",
+       " \"Children's Fiction\",\n",
+       " 'Romance & Sagas']"
+      ]
+     },
+     "execution_count": 70,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div/div[2]/div[2]/div/div[2]/div/table/tbody/tr/td[6]\")\n",
+    "for i in Title_tag:\n",
+    "    Genre.append(i.text)\n",
+    "Genre[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 72,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "books=pd.DataFrame()\n",
+    "books['Book_name']=Book_name[0:99]\n",
+    "books['Author_name']=Author_name[0:99]\n",
+    "books['Volumes_sold']=Volumes_sold[0:99]\n",
+    "books['Publisher']=Publisher[0:99]\n",
+    "books['Genre']=Genre[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 73,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Book_name</th>\n",
+       "      <th>Author_name</th>\n",
+       "      <th>Volumes_sold</th>\n",
+       "      <th>Publisher</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Da Vinci Code,The</td>\n",
+       "      <td>Brown, Dan</td>\n",
+       "      <td>5,094,805</td>\n",
+       "      <td>Transworld</td>\n",
+       "      <td>Crime, Thriller &amp; Adventure</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Harry Potter and the Deathly Hallows</td>\n",
+       "      <td>Rowling, J.K.</td>\n",
+       "      <td>4,475,152</td>\n",
+       "      <td>Bloomsbury</td>\n",
+       "      <td>Children's Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Harry Potter and the Philosopher's Stone</td>\n",
+       "      <td>Rowling, J.K.</td>\n",
+       "      <td>4,200,654</td>\n",
+       "      <td>Bloomsbury</td>\n",
+       "      <td>Children's Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Harry Potter and the Order of the Phoenix</td>\n",
+       "      <td>Rowling, J.K.</td>\n",
+       "      <td>4,179,479</td>\n",
+       "      <td>Bloomsbury</td>\n",
+       "      <td>Children's Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Fifty Shades of Grey</td>\n",
+       "      <td>James, E. L.</td>\n",
+       "      <td>3,758,936</td>\n",
+       "      <td>Random House</td>\n",
+       "      <td>Romance &amp; Sagas</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>94</th>\n",
+       "      <td>Nights of Rain and Stars</td>\n",
+       "      <td>Binchy, Maeve</td>\n",
+       "      <td>808,900</td>\n",
+       "      <td>Orion</td>\n",
+       "      <td>General &amp; Literary Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>95</th>\n",
+       "      <td>Ghost,The</td>\n",
+       "      <td>Harris, Robert</td>\n",
+       "      <td>807,311</td>\n",
+       "      <td>Random House</td>\n",
+       "      <td>General &amp; Literary Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>96</th>\n",
+       "      <td>Happy Days with the Naked Chef</td>\n",
+       "      <td>Oliver, Jamie</td>\n",
+       "      <td>794,201</td>\n",
+       "      <td>Penguin</td>\n",
+       "      <td>Food &amp; Drink: General</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>97</th>\n",
+       "      <td>Hunger Games,The:Hunger Games Trilogy</td>\n",
+       "      <td>Collins, Suzanne</td>\n",
+       "      <td>792,187</td>\n",
+       "      <td>Scholastic Ltd.</td>\n",
+       "      <td>Young Adult Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>98</th>\n",
+       "      <td>Lost Boy,The:A Foster Child's Search for the L...</td>\n",
+       "      <td>Pelzer, Dave</td>\n",
+       "      <td>791,507</td>\n",
+       "      <td>Orion</td>\n",
+       "      <td>Biography: General</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>99 rows × 5 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                            Book_name       Author_name  \\\n",
+       "0                                   Da Vinci Code,The        Brown, Dan   \n",
+       "1                Harry Potter and the Deathly Hallows     Rowling, J.K.   \n",
+       "2            Harry Potter and the Philosopher's Stone     Rowling, J.K.   \n",
+       "3           Harry Potter and the Order of the Phoenix     Rowling, J.K.   \n",
+       "4                                Fifty Shades of Grey      James, E. L.   \n",
+       "..                                                ...               ...   \n",
+       "94                           Nights of Rain and Stars     Binchy, Maeve   \n",
+       "95                                          Ghost,The    Harris, Robert   \n",
+       "96                     Happy Days with the Naked Chef     Oliver, Jamie   \n",
+       "97              Hunger Games,The:Hunger Games Trilogy  Collins, Suzanne   \n",
+       "98  Lost Boy,The:A Foster Child's Search for the L...      Pelzer, Dave   \n",
+       "\n",
+       "   Volumes_sold        Publisher                        Genre  \n",
+       "0     5,094,805       Transworld  Crime, Thriller & Adventure  \n",
+       "1     4,475,152       Bloomsbury           Children's Fiction  \n",
+       "2     4,200,654       Bloomsbury           Children's Fiction  \n",
+       "3     4,179,479       Bloomsbury           Children's Fiction  \n",
+       "4     3,758,936     Random House              Romance & Sagas  \n",
+       "..          ...              ...                          ...  \n",
+       "94      808,900            Orion   General & Literary Fiction  \n",
+       "95      807,311     Random House   General & Literary Fiction  \n",
+       "96      794,201          Penguin        Food & Drink: General  \n",
+       "97      792,187  Scholastic Ltd.          Young Adult Fiction  \n",
+       "98      791,507            Orion           Biography: General  \n",
+       "\n",
+       "[99 rows x 5 columns]"
+      ]
+     },
+     "execution_count": 73,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "books"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 9"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://www.imdb.com/list/ls095964455/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Name=[]\n",
+    "Year_span=[]\n",
+    "Genre=[]\n",
+    "Run_time=[]\n",
+    "Ratings=[]\n",
+    "Votes=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Game of Thrones',\n",
+       " 'Stranger Things',\n",
+       " 'The Walking Dead',\n",
+       " '13 Reasons Why',\n",
+       " 'The 100']"
+      ]
+     },
+     "execution_count": 53,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div[3]/div[1]/div/div[3]/div[3]/div/div[2]/h3/a\")\n",
+    "for i in Title_tag:\n",
+    "    Name.append(i.text)\n",
+    "Name[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['(2011–2019)', '(2016– )', '(2010– )', '(2017–2020)', '(2014–2020)']"
+      ]
+     },
+     "execution_count": 54,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div[3]/div[1]/div/div[3]/div[3]/div/div[2]/h3/span[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Year_span.append(i.text)\n",
+    "Year_span[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Action, Adventure, Drama',\n",
+       " 'Drama, Fantasy, Horror',\n",
+       " 'Drama, Horror, Thriller',\n",
+       " 'Drama, Mystery, Thriller',\n",
+       " 'Drama, Mystery, Sci-Fi']"
+      ]
+     },
+     "execution_count": 55,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div[3]/div[1]/div/div[3]/div[3]/div/div[2]/p[1]/span[5]\")\n",
+    "for i in Title_tag:\n",
+    "    Genre.append(i.text)\n",
+    "Genre[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['57 min', '51 min', '44 min', '60 min', '43 min']"
+      ]
+     },
+     "execution_count": 56,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div[3]/div[1]/div/div[3]/div[3]/div/div[2]/p[1]/span[3]\")\n",
+    "for i in Title_tag:\n",
+    "    Run_time.append(i.text)\n",
+    "Run_time[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 57,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['9.3', '8.7', '8.2', '7.6', '7.6']"
+      ]
+     },
+     "execution_count": 57,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div[3]/div[1]/div/div[3]/div[3]/div/div[2]/div[1]/div[1]/span[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Ratings.append(i.text)\n",
+    "Ratings[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['1,778,177', '828,817', '856,753', '257,205', '217,733']"
+      ]
+     },
+     "execution_count": 59,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/div[3]/div/div[2]/div[3]/div[1]/div/div[3]/div[3]/div/div[2]/p[4]/span[2]\")\n",
+    "for i in Title_tag:\n",
+    "    Votes.append(i.text)\n",
+    "Votes[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 60,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "series=pd.DataFrame()\n",
+    "series['Name']=Name[0:99]\n",
+    "series['Year_span']=Year_span[0:99]\n",
+    "series['Genre']=Genre[0:99]\n",
+    "series['Run_time']=Run_time[0:99]\n",
+    "series['Ratings']=Ratings[0:99]\n",
+    "series['Votes']=Votes[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Name</th>\n",
+       "      <th>Year_span</th>\n",
+       "      <th>Genre</th>\n",
+       "      <th>Run_time</th>\n",
+       "      <th>Ratings</th>\n",
+       "      <th>Votes</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Game of Thrones</td>\n",
+       "      <td>(2011–2019)</td>\n",
+       "      <td>Action, Adventure, Drama</td>\n",
+       "      <td>57 min</td>\n",
+       "      <td>9.3</td>\n",
+       "      <td>1,778,177</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Stranger Things</td>\n",
+       "      <td>(2016– )</td>\n",
+       "      <td>Drama, Fantasy, Horror</td>\n",
+       "      <td>51 min</td>\n",
+       "      <td>8.7</td>\n",
+       "      <td>828,817</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>The Walking Dead</td>\n",
+       "      <td>(2010– )</td>\n",
+       "      <td>Drama, Horror, Thriller</td>\n",
+       "      <td>44 min</td>\n",
+       "      <td>8.2</td>\n",
+       "      <td>856,753</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>13 Reasons Why</td>\n",
+       "      <td>(2017–2020)</td>\n",
+       "      <td>Drama, Mystery, Thriller</td>\n",
+       "      <td>60 min</td>\n",
+       "      <td>7.6</td>\n",
+       "      <td>257,205</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>The 100</td>\n",
+       "      <td>(2014–2020)</td>\n",
+       "      <td>Drama, Mystery, Sci-Fi</td>\n",
+       "      <td>43 min</td>\n",
+       "      <td>7.6</td>\n",
+       "      <td>217,733</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>94</th>\n",
+       "      <td>iZombie</td>\n",
+       "      <td>(2015–2019)</td>\n",
+       "      <td>Comedy, Crime, Drama</td>\n",
+       "      <td>42 min</td>\n",
+       "      <td>7.8</td>\n",
+       "      <td>60,639</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>95</th>\n",
+       "      <td>Reign</td>\n",
+       "      <td>(2013–2017)</td>\n",
+       "      <td>Drama, Fantasy</td>\n",
+       "      <td>42 min</td>\n",
+       "      <td>7.5</td>\n",
+       "      <td>43,765</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>96</th>\n",
+       "      <td>A Series of Unfortunate Events</td>\n",
+       "      <td>(2017–2019)</td>\n",
+       "      <td>Adventure, Comedy, Drama</td>\n",
+       "      <td>50 min</td>\n",
+       "      <td>7.8</td>\n",
+       "      <td>54,087</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>97</th>\n",
+       "      <td>Criminal Minds</td>\n",
+       "      <td>(2005–2020)</td>\n",
+       "      <td>Crime, Drama, Mystery</td>\n",
+       "      <td>42 min</td>\n",
+       "      <td>8.1</td>\n",
+       "      <td>162,232</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>98</th>\n",
+       "      <td>Scream: The TV Series</td>\n",
+       "      <td>(2015–2019)</td>\n",
+       "      <td>Crime, Drama, Horror</td>\n",
+       "      <td>45 min</td>\n",
+       "      <td>7.2</td>\n",
+       "      <td>34,200</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>99 rows × 6 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                              Name    Year_span                     Genre  \\\n",
+       "0                  Game of Thrones  (2011–2019)  Action, Adventure, Drama   \n",
+       "1                  Stranger Things     (2016– )    Drama, Fantasy, Horror   \n",
+       "2                 The Walking Dead     (2010– )   Drama, Horror, Thriller   \n",
+       "3                   13 Reasons Why  (2017–2020)  Drama, Mystery, Thriller   \n",
+       "4                          The 100  (2014–2020)    Drama, Mystery, Sci-Fi   \n",
+       "..                             ...          ...                       ...   \n",
+       "94                         iZombie  (2015–2019)      Comedy, Crime, Drama   \n",
+       "95                           Reign  (2013–2017)            Drama, Fantasy   \n",
+       "96  A Series of Unfortunate Events  (2017–2019)  Adventure, Comedy, Drama   \n",
+       "97                  Criminal Minds  (2005–2020)     Crime, Drama, Mystery   \n",
+       "98           Scream: The TV Series  (2015–2019)      Crime, Drama, Horror   \n",
+       "\n",
+       "   Run_time Ratings      Votes  \n",
+       "0    57 min     9.3  1,778,177  \n",
+       "1    51 min     8.7    828,817  \n",
+       "2    44 min     8.2    856,753  \n",
+       "3    60 min     7.6    257,205  \n",
+       "4    43 min     7.6    217,733  \n",
+       "..      ...     ...        ...  \n",
+       "94   42 min     7.8     60,639  \n",
+       "95   42 min     7.5     43,765  \n",
+       "96   50 min     7.8     54,087  \n",
+       "97   42 min     8.1    162,232  \n",
+       "98   45 min     7.2     34,200  \n",
+       "\n",
+       "[99 rows x 6 columns]"
+      ]
+     },
+     "execution_count": 61,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "series"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 74,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Question 10"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 75,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from bs4 import BeautifulSoup\n",
+    "import requests\n",
+    "import selenium\n",
+    "from selenium import webdriver\n",
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver=webdriver.Chrome(\"Desktop/chromedriver.exe\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 77,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.get(\"https://archive.ics.uci.edu/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Dataset_name=[]\n",
+    "Data_type=[]\n",
+    "Task=[]\n",
+    "Attribute_type=[]\n",
+    "No_of_instances=[]\n",
+    "No_of_attribute=[]\n",
+    "Year=[]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Abalone', 'Adult', 'Annealing', 'Anonymous Microsoft Web Data', 'Arrhythmia']"
+      ]
+     },
+     "execution_count": 79,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr/td[1]/table/tbody/tr/td[2]/p/b/a\")\n",
+    "for i in Title_tag:\n",
+    "    Dataset_name.append(i.text)\n",
+    "Dataset_name[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Data Types', 'Multivariate ', 'Multivariate ', 'Multivariate ', ' ']"
+      ]
+     },
+     "execution_count": 82,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr/td[2]/p\")\n",
+    "for i in Title_tag:\n",
+    "    Data_type.append(i.text)\n",
+    "Data_type[0:5]\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Default Task',\n",
+       " 'Classification ',\n",
+       " 'Classification ',\n",
+       " 'Classification ',\n",
+       " 'Recommender-Systems ']"
+      ]
+     },
+     "execution_count": 83,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr/td[3]/p\")\n",
+    "for i in Title_tag:\n",
+    "    Task.append(i.text)\n",
+    "Task[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Attribute Types',\n",
+       " 'Categorical, Integer, Real ',\n",
+       " 'Categorical, Integer ',\n",
+       " 'Categorical, Integer, Real ',\n",
+       " 'Categorical ']"
+      ]
+     },
+     "execution_count": 84,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr/td[4]/p\")\n",
+    "for i in Title_tag:\n",
+    "    Attribute_type.append(i.text)\n",
+    "Attribute_type[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 85,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['# Instances', '4177 ', '48842 ', '798 ', '37711 ']"
+      ]
+     },
+     "execution_count": 85,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr/td[5]/p\")\n",
+    "for i in Title_tag:\n",
+    "    No_of_instances.append(i.text)\n",
+    "No_of_instances[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['# Attributes', '8 ', '14 ', '38 ', '294 ']"
+      ]
+     },
+     "execution_count": 86,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr/td[6]/p\")\n",
+    "for i in Title_tag:\n",
+    "    No_of_attribute.append(i.text)\n",
+    "No_of_attribute[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 87,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['Year', '1995 ', '1996 ', ' ', '1998 ']"
+      ]
+     },
+     "execution_count": 87,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Title_tag=driver.find_elements_by_xpath(\"/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr/td[7]/p\")\n",
+    "for i in Title_tag:\n",
+    "    Year.append(i.text)\n",
+    "Year[0:5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 88,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "Dataset=pd.DataFrame()\n",
+    "Dataset['Dataset_name']=Dataset_name[0:99]\n",
+    "Dataset['Data_type']=Data_type[0:99]\n",
+    "Dataset['Task']=Task[0:99]\n",
+    "Dataset['Attribute_type']=Attribute_type[0:99]\n",
+    "Dataset['No_of_instances']=No_of_instances[0:99]\n",
+    "Dataset['No_of_attribute']=No_of_attribute[0:99]\n",
+    "Dataset['Year']=Year[0:99]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 89,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Dataset_name</th>\n",
+       "      <th>Data_type</th>\n",
+       "      <th>Task</th>\n",
+       "      <th>Attribute_type</th>\n",
+       "      <th>No_of_instances</th>\n",
+       "      <th>No_of_attribute</th>\n",
+       "      <th>Year</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Abalone</td>\n",
+       "      <td>Data Types</td>\n",
+       "      <td>Default Task</td>\n",
+       "      <td>Attribute Types</td>\n",
+       "      <td># Instances</td>\n",
+       "      <td># Attributes</td>\n",
+       "      <td>Year</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Adult</td>\n",
+       "      <td>Multivariate</td>\n",
+       "      <td>Classification</td>\n",
+       "      <td>Categorical, Integer, Real</td>\n",
+       "      <td>4177</td>\n",
+       "      <td>8</td>\n",
+       "      <td>1995</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Annealing</td>\n",
+       "      <td>Multivariate</td>\n",
+       "      <td>Classification</td>\n",
+       "      <td>Categorical, Integer</td>\n",
+       "      <td>48842</td>\n",
+       "      <td>14</td>\n",
+       "      <td>1996</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Anonymous Microsoft Web Data</td>\n",
+       "      <td>Multivariate</td>\n",
+       "      <td>Classification</td>\n",
+       "      <td>Categorical, Integer, Real</td>\n",
+       "      <td>798</td>\n",
+       "      <td>38</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Arrhythmia</td>\n",
+       "      <td></td>\n",
+       "      <td>Recommender-Systems</td>\n",
+       "      <td>Categorical</td>\n",
+       "      <td>37711</td>\n",
+       "      <td>294</td>\n",
+       "      <td>1998</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>94</th>\n",
+       "      <td>Sponge</td>\n",
+       "      <td>Multivariate</td>\n",
+       "      <td>Classification</td>\n",
+       "      <td>Integer</td>\n",
+       "      <td>267</td>\n",
+       "      <td>44</td>\n",
+       "      <td>2001</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>95</th>\n",
+       "      <td>Statlog Project</td>\n",
+       "      <td>Multivariate</td>\n",
+       "      <td>Clustering</td>\n",
+       "      <td>Categorical, Integer</td>\n",
+       "      <td>76</td>\n",
+       "      <td>45</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>96</th>\n",
+       "      <td>Student Loan Relational</td>\n",
+       "      <td></td>\n",
+       "      <td></td>\n",
+       "      <td></td>\n",
+       "      <td></td>\n",
+       "      <td></td>\n",
+       "      <td>1992</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>97</th>\n",
+       "      <td>Teaching Assistant Evaluation</td>\n",
+       "      <td>Domain-Theory</td>\n",
+       "      <td></td>\n",
+       "      <td></td>\n",
+       "      <td>1000</td>\n",
+       "      <td></td>\n",
+       "      <td>1993</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>98</th>\n",
+       "      <td>Tic-Tac-Toe Endgame</td>\n",
+       "      <td>Multivariate</td>\n",
+       "      <td>Classification</td>\n",
+       "      <td>Categorical, Integer</td>\n",
+       "      <td>151</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1997</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>99 rows × 7 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                     Dataset_name       Data_type                  Task  \\\n",
+       "0                         Abalone      Data Types          Default Task   \n",
+       "1                           Adult   Multivariate        Classification    \n",
+       "2                       Annealing   Multivariate        Classification    \n",
+       "3    Anonymous Microsoft Web Data   Multivariate        Classification    \n",
+       "4                      Arrhythmia                  Recommender-Systems    \n",
+       "..                            ...             ...                   ...   \n",
+       "94                         Sponge   Multivariate        Classification    \n",
+       "95                Statlog Project   Multivariate            Clustering    \n",
+       "96        Student Loan Relational                                         \n",
+       "97  Teaching Assistant Evaluation  Domain-Theory                          \n",
+       "98            Tic-Tac-Toe Endgame   Multivariate        Classification    \n",
+       "\n",
+       "                 Attribute_type No_of_instances No_of_attribute   Year  \n",
+       "0               Attribute Types     # Instances    # Attributes   Year  \n",
+       "1   Categorical, Integer, Real            4177               8   1995   \n",
+       "2         Categorical, Integer           48842              14   1996   \n",
+       "3   Categorical, Integer, Real             798              38          \n",
+       "4                  Categorical           37711             294   1998   \n",
+       "..                          ...             ...             ...    ...  \n",
+       "94                     Integer             267              44   2001   \n",
+       "95        Categorical, Integer              76              45          \n",
+       "96                                                               1992   \n",
+       "97                                        1000                   1993   \n",
+       "98        Categorical, Integer             151               5   1997   \n",
+       "\n",
+       "[99 rows x 7 columns]"
+      ]
+     },
+     "execution_count": 89,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Dataset"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
